@@ -17,7 +17,7 @@ export default function NavBar() {
 const navigate=useNavigate()
   const {token,setToken}=useContext(tokenContext)
 
-console.log(token)
+// console.log(token)
 
 function logOutUser(){
   localStorage.removeItem("token")

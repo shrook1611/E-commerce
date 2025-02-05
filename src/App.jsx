@@ -17,6 +17,10 @@ import "slick-carousel/slick/slick-theme.css";
 import ProductDetails from './Pages/ProductDetails/ProductDetails';
 import { Offline, Online } from "react-detect-offline";
 import { CiWifiOff } from "react-icons/ci";
+import CartContextProvider from "./Components/Context/CartContext";
+
+import {Toaster}from"react-hot-toast"
+
 export default function App() {
   const routes = createBrowserRouter([
     {
@@ -74,22 +78,23 @@ export default function App() {
 
   return (
     <TokenContextProvider>
-      <CounterContextProvider>
+     <CartContextProvider>
+     <CounterContextProvider>
        
-        <Offline> <div className="offline fixed bottom-2 right-4 bg-slate-100 p-2 font-medium rounded-lg z-50 flex justify-between items-center gap-2"> <CiWifiOff />
-        You are  now offline
-        
- 
-        </div>
+       <Offline> <div className="offline fixed bottom-2 right-4 bg-slate-100 p-2 font-medium rounded-lg z-50 flex justify-between items-center gap-2"> <CiWifiOff />
+       You are  now offline
        
-        </Offline>
-     
-        <RouterProvider router={routes}>
-        
-    
+
+       </div>
+      
+       </Offline>
+       <Toaster position="bottom-right"/>
+       <RouterProvider router={routes}>
+       
    
-        </RouterProvider>
-      </CounterContextProvider>
+       </RouterProvider>
+     </CounterContextProvider>
+     </CartContextProvider>
     </TokenContextProvider>
   );
 }

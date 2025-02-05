@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './ProductItem.module.css';
 import { FaCartShopping, FaStar } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
-export default function ProductItem({product}) {
+export default function ProductItem({product ,addProduct}) {
   return (
     <div>
 
@@ -32,7 +32,7 @@ export default function ProductItem({product}) {
 </div>
 </div>
 </Link>
-<button className='btn w-full flex justify-between items-center font-semibold ' >Add to cart <FaCartShopping /> </button>
+<button onClick={()=>{addProduct(product.id)}} className='btn w-full flex justify-between items-center font-semibold ' >Add to cart <FaCartShopping /> </button>
 
 
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./LatestProducts.module.css";
 import axios from "axios";
 import { useState } from "react";
@@ -6,8 +6,11 @@ import { useEffect } from "react";
 import { FaStar } from "react-icons/fa6";
 import ProductItem from './../ProductItem/ProductItem';
 import Loader from "../Loader/Loader";
+import toast from "react-hot-toast";
+import { CartContext } from "../Context/CartContext";
 
 export default function LatestProducts() {
+  const { addTocart } = useContext(CartContext);
   const [products, setProducts] = useState([]);
   async function getProduct() {
     await axios
@@ -24,13 +27,40 @@ export default function LatestProducts() {
     getProduct();
   }, []);
 
+  async function addProduct(id) {
+    const res = await addTocart(id);
+    if (res.status == "success") {
+      toast.success(res.message, { style: { fontWeight: "bold" ,
+        color:"green"
+      } });
+    } else {
+      toast.error("somthing went wrong");
+    }
+    console.log(res);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   return (
     <div className="row ">
       {products.length > 0 ?
         products.map((product) => {
           return <div  className=' gap-2 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/6'   key={product.id}>
 
-<ProductItem product={product}/>
+<ProductItem product={product} addProduct={addProduct}/>
 
 
 
