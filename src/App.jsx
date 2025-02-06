@@ -18,8 +18,9 @@ import ProductDetails from './Pages/ProductDetails/ProductDetails';
 import { Offline, Online } from "react-detect-offline";
 import { CiWifiOff } from "react-icons/ci";
 import CartContextProvider from "./Components/Context/CartContext";
-
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import {Toaster}from"react-hot-toast"
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 export default function App() {
   const routes = createBrowserRouter([
@@ -75,8 +76,10 @@ export default function App() {
       ],
     },
   ]);
-
+const queryClient=new QueryClient()
   return (
+    <QueryClientProvider client={queryClient}>
+
     <TokenContextProvider>
      <CartContextProvider>
      <CounterContextProvider>
@@ -89,6 +92,7 @@ export default function App() {
       
        </Offline>
        <Toaster position="bottom-right"/>
+       <ReactQueryDevtools initialIsOpen={false} />
        <RouterProvider router={routes}>
        
    
@@ -96,5 +100,6 @@ export default function App() {
      </CounterContextProvider>
      </CartContextProvider>
     </TokenContextProvider>
+    </QueryClientProvider>
   );
 }

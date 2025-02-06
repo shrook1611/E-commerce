@@ -35,7 +35,7 @@ export default function Cart() {
   async function clearCart() {
     const data = await clearcartProducts();
     setCartData(data);
-    toast.success("cart cleard successfuly" , {
+    toast.success("cart cleard successfuly", {
       style: {
         border: "1px solid black",
       },
