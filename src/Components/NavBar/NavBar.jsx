@@ -4,19 +4,22 @@ import {
   FaFacebook,
   FaInstagramSquare,
   FaLinkedin,
+  FaShoppingCart,
   FaYoutube,
 } from "react-icons/fa";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { tokenContext } from './../TokenContext/TokenContext';
 
 import logo from './../../assets/freshcart-logo.svg'
+import { CartContext } from "../Context/CartContext";
+import { useSelector } from "react-redux";
 
 
 
 export default function NavBar() {
 const navigate=useNavigate()
   const {token,setToken}=useContext(tokenContext)
-
+const {nOfCartItems}= useContext(CartContext)
 // console.log(token)
 
 function logOutUser(){
@@ -25,12 +28,12 @@ function logOutUser(){
 navigate('/LogIn')
 }
 
+const {counter}=useSelector((state)=>state.counter)
 
 
 
 
-
-
+console.log(token)
 
 
 
@@ -85,23 +88,16 @@ navigate('/LogIn')
                     className="block py-2 px-3 text-white bg-green-700 rounded md:bg-transparent md:text-green-700 md:p-0 dark:text-white md:dark:text-blue-500"
                     aria-current="page"
                   >
-                    Home
+                    Home 
                   </NavLink>
                 </li>
-                <li>
-                  <NavLink
-                    to={"cart"}
-                    className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-                  >
-                    Cart
-                  </NavLink>
-                </li>
+              
                 <li>
                   <NavLink
                     to={"products"}
                     className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                   >
-                    Products
+                    Products{counter}
                   </NavLink>
                 </li>
                 <li>
@@ -152,7 +148,19 @@ navigate('/LogIn')
                   <FaLinkedin />
                 </a>
               </li>
-              <li>
+              {token&&<>
+                <li>
+                  <NavLink
+                    to={"cart"}
+                    className="block py-2 px-3 relative text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                  >
+                   <FaShoppingCart className="text-xl" />
+                   <span className=" w-5 text-sm font-bold h-5 rounded-full absolute flex justify-center bottom-4 left-3  bg-green-600 item-center text-white ">{nOfCartItems}</span>
+                  </NavLink>
+                </li>
+
+
+                <li>
                 <a
                   
                   onClick={()=>{logOutUser()}}
@@ -161,6 +169,9 @@ navigate('/LogIn')
                   SignOut
                 </a>
               </li>
+              
+              </>}
+            
  {!token&&<>
 
 

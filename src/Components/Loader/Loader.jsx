@@ -1,7 +1,8 @@
 import React from 'react'
 import './Loader.module.css'
 export default function Loader() {
-  return (
+  return (<>
     <div className='flex justify-center items-center'><div className="loader"></div></div>
+    <h2>hello from</h2></>
   )
 }

@@ -21,11 +21,13 @@ export default function ProductDetails() {
   const { productId } = useParams();
   const [productDetail, setProductDetail] = useState([]);
 
-  const { addTocart } = useContext(CartContext);
+  const { addTocart,setNOfCartItems, setCartId} = useContext(CartContext);
 
   async function addProduct(id) {
     const res = await addTocart(id);
     if (res.status == "success") {
+      setNOfCartItems(res.numOfCartItems);
+      setCartId(res.cartId)
       toast.success(res.message, { style: { fontWeight: "bold" ,
         color:"green"
       } });
