@@ -1,9 +1,12 @@
 import axios from "axios";
-import { createContext } from "react";
+import { createContext, useEffect, useState } from "react";
 
 export const CartContext = createContext();
 export default function CartContextProvider({ children }) {
   const headers = { token: localStorage.getItem("token") };
+  const [nOfCartItems, setNOfCartItems] = useState(0);
+  const [cartId, setCartId] = useState(null);
+
   function addTocart(id) {
     return axios
       .post(
@@ -45,11 +48,11 @@ export default function CartContextProvider({ children }) {
       .catch((err) => err);
   }
 
-  function clearcartProducts(){
+  function clearcartProducts() {
     return axios
       .delete(
         `https://ecommerce.routemisr.com/api/v1/cart`,
-        
+
         {
           headers,
         }
@@ -57,11 +60,52 @@ export default function CartContextProvider({ children }) {
       .then((res) => res.data)
       .catch((err) => err);
   }
-  
+
+  async function getCartItem() {
+    let response = await getLoggedcartItems();
+    setNOfCartItems(response.numOfCartItems);
+    setCartId(response.cartId);
+  }
+
+  useEffect(() => {
+    getCartItem();
+  }, []);
+
+  function cashOnDilvery(data) {
+    return axios
+      .post(`https://ecommerce.routemisr.com/api/v1/orders/${cartId}`, data, {
+        headers,
+      })
+      .then((res) => res.data)
+      .catch((err) => err);
+  }
+  function onlinPayment(data) {
+    return axios
+      .post(
+        `https://ecommerce.routemisr.com/api/v1/orders/checkout-session/${cartId}?url=http://localhost:5173`,
+        data,
+        {
+          headers,
+        }
+      )
+      .then((res) => res.data)
+      .catch((err) => err);
+  }
 
   return (
     <CartContext.Provider
-      value={{ addTocart, getLoggedcartItems, removeCartItem ,updateCartProducts ,clearcartProducts}}
+      value={{
+        addTocart,
+        getLoggedcartItems,
+        removeCartItem,
+        updateCartProducts,
+        clearcartProducts,
+        onlinPayment,
+        nOfCartItems,
+        setCartId,
+        setNOfCartItems,
+        cashOnDilvery,
+      }}
     >
       {children}
     </CartContext.Provider>

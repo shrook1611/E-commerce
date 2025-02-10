@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 import { CartContext } from "../Context/CartContext";
 
 export default function LatestProducts() {
-  const { addTocart } = useContext(CartContext);
+  const { addTocart,setNOfCartItems,setCartId } = useContext(CartContext);
   const [products, setProducts] = useState([]);
   async function getProduct() {
     await axios
@@ -29,7 +29,10 @@ export default function LatestProducts() {
 
   async function addProduct(id) {
     const res = await addTocart(id);
+    
     if (res.status == "success") {
+      setNOfCartItems(res.numOfCartItems);
+    setCartId(res.cartId)
       toast.success(res.message, { style: { fontWeight: "bold" ,
         color:"green"
       } });
@@ -56,6 +59,9 @@ export default function LatestProducts() {
 
   return (
     <div className="row ">
+   
+    <h1>helloooooo</h1>
+    <Loader/>
       {products.length > 0 ?
         products.map((product) => {
           return <div  className=' gap-2 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/6'   key={product.id}>

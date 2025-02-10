@@ -2,40 +2,48 @@ import React, { useEffect, useState } from "react";
 import styles from "./Cart.module.css";
 import { useContext } from "react";
 import { CartContext } from "../../Components/Context/CartContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Loader from "./../../Components/Loader/Loader";
 import { FaTrashAlt } from "react-icons/fa";
 import { toast } from "react-hot-toast";
-
+import { VscClearAll } from "react-icons/vsc";
 export default function Cart() {
   const [cartData, setCartData] = useState([]);
-
+ const navigate= useNavigate()
+const [paymentMethod, setPaymentMethod] = useState('cash')
   const {
     getLoggedcartItems,
     removeCartItem,
     updateCartProducts,
     clearcartProducts,
+    setNOfCartItems,
+    setCartId,
   } = useContext(CartContext);
   async function getData() {
     const data = await getLoggedcartItems();
     setCartData(data.data);
 
-    // console.log(data.data);
+    console.log(data.data);
   }
   async function deleteItem(id) {
-    const x = await removeCartItem(id);
-    setCartData(x.data);
+    const response = await removeCartItem(id);
+    setCartData(response.data);
+    setNOfCartItems(response.numOfCartItems);
+    setCartId(response.cartId);
   }
 
   async function updateProduct(id, count) {
-    let res = await updateCartProducts(id, count);
-    setCartData(res.datat);
+    let response = await updateCartProducts(id, count);
+    setCartData(response.data);
+   
   }
 
   async function clearCart() {
     const data = await clearcartProducts();
     setCartData(data);
-    toast.success("cart cleard successfuly" , {
+    setNOfCartItems(data.numOfCartItems);
+    setCartId(data.cartId);
+    toast.success("cart cleard successfuly", {
       style: {
         border: "1px solid black",
       },
@@ -50,7 +58,7 @@ export default function Cart() {
     <div>
       {cartData ? (
         <div>
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center">
             <h3 className="text-2xl font-semibold text-green-600">
               shopping Cart
             </h3>
@@ -62,9 +70,23 @@ export default function Cart() {
                   EGP
                 </span>
               </h4>
+              
             )}
-          </div>
 
+
+<div className="text-center my-5 font-xxl">
+        <button
+          onClick={() => {
+            clearCart();
+          }}
+          
+        >
+        <VscClearAll className=" text-white bg-red-600 font-xxl  font-bold" />
+        </button>
+      </div>
+
+          </div>
+{console.log(cartData._id)}
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -212,16 +234,42 @@ export default function Cart() {
       ) : (
         <Loader />
       )}
-      <div className="text-center my-5">
-        <button
-          onClick={() => {
-            clearCart();
-          }}
-          className=" btn-red"
-        >
-          clear Cart
+     
+   {cartData?<>
+   
+    <label htmlFor="paymentMethod" className=" text-green-600 font-bold "> choose your Payment Method :</label>
+      <select name="paymentMethod" id="paymentMethod" onChange={(e)=>{
+        setPaymentMethod(e.target.value)
+
+      }} className=" block m-4 w-1/2 border-2 rounded-2xl hover:border-green-500  " >
+<option value="cash">cash</option>
+
+<option value="online">online</option>
+
+          </select>
+   
+   </>:<div className="hidden">
+   
+   <label htmlFor="paymentMethod" className=" text-green-600 font-bold "> choose your Payment Method :</label>
+     <select name="paymentMethod" id="paymentMethod" onChange={''} className=" block m-4 w-1/2 border-2 rounded-2xl hover:border-green-500  " >
+<option value="cash">cash</option>
+
+<option value="online">online</option>
+
+         </select>
+  
+  </div>}
+
+
+
+
+        <button type="submit" className="btn w-full"
+       onClick={()=>{
+        navigate('/checkout',{state:paymentMethod})
+       }} >
+          CheckOut
         </button>
-      </div>
+     
     </div>
   );
 }

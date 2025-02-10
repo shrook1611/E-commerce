@@ -14,12 +14,16 @@ import TokenContextProvider from "./Components/TokenContext/TokenContext";
 import ProtctedRoutes from "./Components/ProtctedRoutes/ProtctedRoutes";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import ProductDetails from './Pages/ProductDetails/ProductDetails';
+import ProductDetails from "./Pages/ProductDetails/ProductDetails";
 import { Offline, Online } from "react-detect-offline";
 import { CiWifiOff } from "react-icons/ci";
 import CartContextProvider from "./Components/Context/CartContext";
-
-import {Toaster}from"react-hot-toast"
+import {store}from './redux/store'
+import { Toaster } from "react-hot-toast";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {Provider}from 'react-redux';
+import CheckOut from "./Pages/Checkout/Checkout";
+import AllOrders from "./Pages/AllOrders/AllOrders";
 
 export default function App() {
   const routes = createBrowserRouter([
@@ -64,10 +68,35 @@ export default function App() {
           ),
         },
         {
+          path: "checkout",
+          element: (
+            <ProtctedRoutes>
+              <CheckOut />
+            </ProtctedRoutes>
+          ),
+        },
+
+        {
+          path: "allorders",
+          element: (
+            <ProtctedRoutes>
+              <AllOrders />
+            </ProtctedRoutes>
+          ),
+        },
+
+
+
+
+
+
+        {
+
+          
           path: "productdetails/:productId",
           element: (
             <ProtctedRoutes>
-              <ProductDetails/>
+              <ProductDetails />
             </ProtctedRoutes>
           ),
         },
@@ -76,25 +105,28 @@ export default function App() {
     },
   ]);
 
-  return (
-    <TokenContextProvider>
-     <CartContextProvider>
-     <CounterContextProvider>
-       
-       <Offline> <div className="offline fixed bottom-2 right-4 bg-slate-100 p-2 font-medium rounded-lg z-50 flex justify-between items-center gap-2"> <CiWifiOff />
-       You are  now offline
-       
+  const queryClient = new QueryClient();
 
-       </div>
-      
-       </Offline>
-       <Toaster position="bottom-right"/>
-       <RouterProvider router={routes}>
-       
-   
-       </RouterProvider>
-     </CounterContextProvider>
-     </CartContextProvider>
+  return (
+    <Provider store={store}>
+    <QueryClientProvider client={queryClient}>
+    <TokenContextProvider>
+      <CartContextProvider>
+        <CounterContextProvider>
+          <Offline>
+            
+            <div className="offline fixed bottom-2 right-4 bg-slate-100 p-2 font-medium rounded-lg z-50 flex justify-between items-center gap-2">
+              
+              <CiWifiOff />
+              You are now offline
+            </div>
+          </Offline>
+          <Toaster position="bottom-right" />
+          <RouterProvider router={routes}></RouterProvider>
+        </CounterContextProvider>
+      </CartContextProvider>
     </TokenContextProvider>
+    </QueryClientProvider>
+    </Provider>
   );
 }
