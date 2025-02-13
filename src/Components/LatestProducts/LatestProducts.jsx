@@ -60,11 +60,11 @@ export default function LatestProducts() {
   return (
     <div className="row ">
    
-    <h1>helloooooo</h1>
-    <Loader/>
+   
+   
       {products.length > 0 ?
         products.map((product) => {
-          return <div  className=' gap-2 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/6'   key={product.id}>
+          return <div  className=' gap-2 w-full sm:w-1/2 md:w-1/3 lg:w-1/6 xl:w-1/6'   key={product.id}>
 
 <ProductItem product={product} addProduct={addProduct}/>
 
