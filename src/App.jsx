@@ -24,6 +24,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {Provider}from 'react-redux';
 import CheckOut from "./Pages/Checkout/Checkout";
 import AllOrders from "./Pages/AllOrders/AllOrders";
+import Brands from "./Pages/Brands/Brands";
+import BrandsDetalis from "./Pages/BrandsDetails/brandsDetalis";
 
 export default function App() {
   const routes = createBrowserRouter([
@@ -59,6 +61,29 @@ export default function App() {
             </ProtctedRoutes>
           ),
         },
+
+        {
+          path: "brands",
+          element: (
+            <ProtctedRoutes>
+              <Brands />
+            </ProtctedRoutes>
+          ),
+        },
+
+        {
+          path: "brandsDetalis/:brandId",
+          element: (
+            <ProtctedRoutes>
+              <BrandsDetalis />
+            </ProtctedRoutes>
+          ),
+        },
+
+
+
+
+
         {
           path: "Cart",
           element: (
