@@ -9,16 +9,19 @@ import {
 } from "react-icons/fa";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { tokenContext } from './../TokenContext/TokenContext';
-
+import { MdFavoriteBorder } from "react-icons/md";
 import logo from './../../assets/freshcart-logo.svg'
 import { CartContext } from "../Context/CartContext";
 import { useSelector } from "react-redux";
+import { WishContext } from "../Context/WishListContext";
 
 
 
 export default function NavBar() {
 const navigate=useNavigate()
   const {token,setToken}=useContext(tokenContext)
+ const { nOfWishItems}= useContext(WishContext)
+ console.log(nOfWishItems)
 const {nOfCartItems}= useContext(CartContext)
 // console.log(token)
 
@@ -177,6 +180,26 @@ console.log(token)
                    <span className=" w-5 text-sm font-bold h-5 rounded-full absolute flex justify-center bottom-4 left-3  bg-green-600 item-center text-white ">{nOfCartItems}</span>
                   </NavLink>
                 </li>
+
+                <li>
+                  <NavLink
+                    to={"wishlist"}
+                    className="block py-2 px-3 relative text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                  >
+                   <MdFavoriteBorder  className="text-3xl" />
+                   <span className=" w-5 text-sm font-bold h-5 rounded-full absolute flex justify-center bottom-5 left-5  bg-red-600 item-center text-white ">{nOfWishItems}</span>
+                  </NavLink>
+                </li>
+
+
+
+
+
+
+
+
+
+
 
 
                 <li>

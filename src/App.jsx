@@ -26,6 +26,10 @@ import CheckOut from "./Pages/Checkout/Checkout";
 import AllOrders from "./Pages/AllOrders/AllOrders";
 import Brands from "./Pages/Brands/Brands";
 import BrandsDetalis from "./Pages/BrandsDetails/brandsDetalis";
+import Wishlist from "./Pages/WishList/Wishlist";
+import WishListContextProvider from "./Components/Context/WishListContext";
+import ForgetPassword from "./Pages/ForgetPassword/ForgetPassword";
+import RestPassword from "./Pages/RestPassword/RestPassword";
 
 export default function App() {
   const routes = createBrowserRouter([
@@ -92,7 +96,43 @@ export default function App() {
             </ProtctedRoutes>
           ),
         },
+
         {
+          path: "wishlist",
+          element: (
+            <ProtctedRoutes>
+              <Wishlist />
+            </ProtctedRoutes>
+          ),
+        },
+
+
+
+
+
+        {
+          path: "forgetpassword",
+          element: (
+           
+              <ForgetPassword />
+           
+          ),
+        },
+
+        {
+          path: "resetPassword",
+          element: (
+           
+              <RestPassword />
+           
+          ),
+        },
+
+
+
+
+        {
+
           path: "checkout",
           element: (
             <ProtctedRoutes>
@@ -136,6 +176,7 @@ export default function App() {
     <Provider store={store}>
     <QueryClientProvider client={queryClient}>
     <TokenContextProvider>
+      <WishListContextProvider>
       <CartContextProvider>
         <CounterContextProvider>
           <Offline>
@@ -150,6 +191,7 @@ export default function App() {
           <RouterProvider router={routes}></RouterProvider>
         </CounterContextProvider>
       </CartContextProvider>
+      </WishListContextProvider>
     </TokenContextProvider>
     </QueryClientProvider>
     </Provider>

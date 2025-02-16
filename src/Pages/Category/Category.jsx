@@ -24,12 +24,12 @@ export default function Categories() {
         return (
           <div className="w-1/4" key={category.id}>
           
-            <div className="outter p-3">
-              <div className="inner cursor-pointer">
+            <div className="outter p-3 mt-5">
+              <div className="inner cursor-pointer flex justify-center items-center flex-col ">
                 <img
                   src={category.image}
                   alt={category.name}
-                  className="h-[200px] "
+                  className="h-[200px] w-[200px] rounded-full hover:shadwo-lg hover:rotate-[360deg] hover:scale-[1.1]  transition-all duration-500"
                 />
                 <h5 className="font-bold text-green-600">{category.name}</h5>
               </div>

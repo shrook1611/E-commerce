@@ -2,12 +2,13 @@ import React from 'react';
 import styles from './ProductItem.module.css';
 import { FaCartShopping, FaStar } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
-export default function ProductItem({product ,addProduct}) {
+import { MdFavoriteBorder } from "react-icons/md";
+export default function ProductItem({product ,addProduct,addWish}) {
   return (
     <div>
 
 
-<div className="product cursor-pointer p-4 mb-2 border border-transparent rounded-md">
+<div className="product cursor-pointer p-4 mb-2 border border-transparent rounded-md relative">
 
 
 
@@ -34,7 +35,7 @@ export default function ProductItem({product ,addProduct}) {
 </Link>
 <button onClick={()=>{addProduct(product.id)}} className='btn w-full flex justify-between items-center font-semibold ' >Add to cart <FaCartShopping /> </button>
 
-
+<button   onClick={()=>{addWish(product.id)}}     className={'text-2xl absolute top-0 right-0 font-semibold cursor-pointer'}><MdFavoriteBorder /></button>
 
 </div>
 

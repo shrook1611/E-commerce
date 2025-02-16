@@ -109,7 +109,7 @@ const navigate=useNavigate()
   return (
     <div>
       <section className="bg-gray-50 w-1/2 mx-auto shadow p-3 ">
-        <h1 className="font-bold my-2 text-3xl">Register Now</h1>
+        <h1 className="font-bold my-2 text-2xl text-center text-green-600">Register Now</h1>
         
         {error&&<div className="bg-red-400 p-3 rounded-lg">{error}</div>
 
@@ -120,7 +120,7 @@ const navigate=useNavigate()
               htmlFor="Name"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Your Name
+              Your Name:
             </label>
             <input
               type="Name"
@@ -141,7 +141,7 @@ const navigate=useNavigate()
               htmlFor="email"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Your email
+              Your email:
             </label>
             <input
               type="email"
@@ -162,7 +162,7 @@ const navigate=useNavigate()
               htmlFor="Password"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Your Password
+              Your Password:
             </label>
             <input
               type="Password"
@@ -183,7 +183,7 @@ const navigate=useNavigate()
               htmlFor="Repassword"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Your Repassword
+              Your Repassword :
             </label>
             <input
               type="Password"
@@ -204,7 +204,7 @@ const navigate=useNavigate()
               htmlFor="phone"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Your phone
+              Your phone :
             </label>
             <input
               type="tel"
@@ -237,7 +237,7 @@ const navigate=useNavigate()
         >
           Register
         </button>}
-          <small>Alerady have account</small> <Link to={"/LogIn"}>Login</Link>
+          <small>Alerady have account</small> <Link  className="text-green-600 font-bold"         to={"/LogIn"}>Login</Link>
         </form>
       </section>
     </div>

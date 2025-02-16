@@ -53,8 +53,8 @@ export default function LogIn() {
 
   return (
     <div>
-      <section className="bg-gray-50 w-1/2 mx-auto shadow p-3  pt-8">
-        <h1 className="font-bold my-2 text-3xl text-center">LogIn </h1>
+      <section className="bg-gray-50 w-1/2 mx-auto shadow p-3  py-8">
+        <h1 className="font-bold my-2 text-3xl text-center text-green-600">LogIn </h1>
 
         {error && <div className="bg-red-400 p-3 rounded-lg">{error}</div>}
         <form className="w-1/2 mx-auto" onSubmit={formik.handleSubmit}>
@@ -63,7 +63,7 @@ export default function LogIn() {
               htmlFor="email"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Your email
+              Your email:
             </label>
             <input
               type="email"
@@ -84,7 +84,7 @@ export default function LogIn() {
               htmlFor="Password"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Your Password
+              Your Password:
             </label>
             <input
               type="Password"
@@ -105,16 +105,29 @@ export default function LogIn() {
               loadinig....
             </button>
           ) : (
-            <button
-              disabled={!formik.isValid}
-              type="submit"
-              className="btn"
-            >
-              Register
+            <button disabled={!formik.isValid} type="submit" className="btn">
+              LogIn
             </button>
           )}
           <small>creat new account</small>{" "}
-          <Link to={"/Register"}>register</Link>
+          <Link
+            className=" text-green-600 font-bold capitalize"
+            to={"/Register"}
+          >
+            register
+          </Link>
+          <div
+            className="flex  gap-3 items-center
+         "
+          >
+            <small>froget your password</small>
+            <Link
+              className=" text-green-600 font-bold  text-sm capitalize"
+              to={"/forgetPassword"}
+            >
+              click here
+            </Link>
+          </div>
         </form>
       </section>
     </div>
