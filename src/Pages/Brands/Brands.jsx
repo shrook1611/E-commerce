@@ -22,22 +22,23 @@ export default function Brands() {
 
   return (
     <div className="container mx-auto">
-      {" "}
-      <div className="row gap-2 bg-slate-500 ">
+      <div className="row  ">
         {brands?.map((brand) => {
           return (
-            <Link to={`/brandsDetalis/${brand._id}`}>
-              <div
-                className="outter p-3  shadow-xl text-center relative  bg-red-200"
-                key={brand._id}
-              >
-                <div className="inner cursor-pointer bg-green-300 sm:w-full md:w-1/2 lg:w-1/3 ">
+            <Link  key={brand._id}
+              className="w-1/3 text-center flex items-center"
+              to={`/brandsDetalis/${brand._id}`}
+            >
+              <div className="outter p-3  ">
+                <div className="inner cursor-pointer ">
                   <img
                     src={brand.image}
                     alt={brand.name}
-                    className=" rounded-full hover:shadwo-lg hover:rotate-[360deg] hover:scale-[1.1]  transition-all duration-500"
+                    className=" rounded-full w-[200px] h-[200px] hover:shadwo-xl hover:scale-[1.1]  transition-all duration-500"
                   />
-                  <h5 className="font-bold text-green-600">{brand.name}</h5>
+                  <h5 className="font-bold text-green-600 text-2xl m-1">
+                    {brand.name}
+                  </h5>
                   <div className="layer "></div>
                 </div>
               </div>
