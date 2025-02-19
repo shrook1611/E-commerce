@@ -7,20 +7,16 @@ import axios from "axios";
 export default function RestPassword() {
   const navigate = useNavigate();
 
-  const initialValues = {
-    resetCode: "",
+  const user = {
+    resetCode:''
   };
 
-  async function handelCode(data) {
-    console.log("Sending data:", data);
+  async function handleCode(value) {
+    console.log("Sending data:", value);
     try {
-      const response = await axios
-        .post(
-          "https://ecommerce.routemisr.com/api/v1/auth/verifyResetCode",
-          data
-        )
-      
-      if (response.data.status==='success') {
+      const response = await axios.post("https://ecommerce.routemisr.com/api/v1/auth/verifyResetCode",  value )
+      console.log(response)
+      if (response.data.status==='Success') {
         toast.success("Verification successful!");
         navigate("/newpassword");
       } else {
@@ -34,9 +30,9 @@ export default function RestPassword() {
   }
 
   const formik = useFormik({
-    initialValues,
+    initialValues:user,
 
-    onSubmit: handelCode,
+    onSubmit: handleCode,
   });
 
   return (
@@ -55,7 +51,7 @@ export default function RestPassword() {
               Your code:
             </label>
             <input
-              type="number"
+              type="text"
               id="resetCode"
               name="resetCode"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

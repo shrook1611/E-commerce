@@ -12,7 +12,7 @@ import { WishContext } from "../Context/WishListContext";
 
 export default function LatestProducts() {
   const { addTocart, setNOfCartItems, setCartId } = useContext(CartContext);
-  const { addToWishList, nOfWishItems, setNOfWishItems,getLoggedWishItems } =
+  const { addToWishList, nOfWishItems, setNOfWishItems,getLoggedWishItems,getWishItem } =
     useContext(WishContext);
   const [products, setProducts] = useState([]);
   async function getProduct() {
@@ -48,9 +48,11 @@ export default function LatestProducts() {
   async function addWish(id) {
      const res = await addToWishList(id);
      getLoggedWishItems()
+     getWishItem()
     console.log(res)
 
     if (res.status == "success") {
+     
       toast.success(res.message, {
         style: { fontWeight: "bold", color: "green" },
       });

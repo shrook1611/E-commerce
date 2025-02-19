@@ -13,15 +13,14 @@ export default function Wishlist() {
   async function getWishData() {
     const res = await getLoggedWishItems();
     setWishlistData(res);
+    setNOfWishItems(res.count)
   }
 
   async function removeItem(id){
     
     const res = await removeWishItem(id)
-    setWishlistData(res.data)
-    setNOfWishItems   (res.nOfWishItems)
-
-    console.log(res.data)
+    getWishData()
+    
     if (res.status == "success") {
  
         toast.success(res.message, { style: { fontWeight: "bold" ,

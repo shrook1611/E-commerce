@@ -31,6 +31,7 @@ import WishListContextProvider from "./Components/Context/WishListContext";
 import ForgetPassword from "./Pages/ForgetPassword/ForgetPassword";
 import RestPassword from "./Pages/RestPassword/RestPassword";
 import NewPassword from "./Pages/NewPassword/NewPassword";
+import UserOrder from "./Pages/UserOrder/UserOrder";
 
 export default function App() {
   const routes = createBrowserRouter([
@@ -159,6 +160,14 @@ export default function App() {
         },
 
 
+        {
+          path: "userorder",
+          element: (
+            <ProtctedRoutes>
+              <UserOrder />
+            </ProtctedRoutes>
+          ),
+        },
 
 
 

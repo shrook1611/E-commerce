@@ -29,8 +29,9 @@ export default function CheckOut() {
 
       if (res.status) {
         setNOfCartItems(0);
+        navigate("/Userorder");
         setCartId(null);
-        navigate("/allorders");
+       
       }
     } else {
       let response = await onlinPayment({ shippingAddress: data });

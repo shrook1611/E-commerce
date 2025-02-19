@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import React from "react";
 
 export const WishContext = createContext();
@@ -29,11 +29,39 @@ export default function WishListContextProvider({ children }) {
       .get("https://ecommerce.routemisr.com/api/v1/wishlist", { headers })
       .then((res) => {
         console.log(res.data)
-      console.log(res?.count);
+     
         return res.data
       })
       .catch((err) => err);
+
+
+
+
   }
+
+
+
+  async function getWishItem() {
+    let response = await getLoggedWishItems();
+    console.log(response)
+     setNOfWishItems(response.count);
+   
+  }
+
+  useEffect(() => {
+    getWishItem();
+  }, []);
+
+
+
+
+
+
+
+
+
+
+
 
   function removeWishItem(productId) {
     return axios
@@ -44,6 +72,7 @@ export default function WishListContextProvider({ children }) {
       .catch((err) => err);
   }
 
+
   return (
     <WishContext.Provider
       value={{
@@ -51,7 +80,7 @@ export default function WishListContextProvider({ children }) {
         getLoggedWishItems,
 
         removeWishItem,
-        
+        getWishItem,
         nOfWishItems,
         setNOfWishItems,
       }}
