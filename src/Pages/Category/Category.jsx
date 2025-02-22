@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./Category.module.css";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
 
 export default function Categories() {
   async function getCategories() {
@@ -21,10 +22,12 @@ export default function Categories() {
   return (
     <div className="row ">
       {categories?.map((category) => {
+        {console.log(category)}
         return (
-          <div className="w-1/4" key={category.id}>
+          <div className="xl:w-1/4 sm:w-full md:w-1/2 lg:w-1/3" key={category._id}>
           
-            <div className="outter p-3 mt-5">
+          <Link to={`/categoryProducts/${category._id}`}>
+          <div className="outter p-3 mt-5">
               <div className="inner cursor-pointer flex justify-center items-center flex-col ">
                 <img
                   src={category.image}
@@ -34,6 +37,7 @@ export default function Categories() {
                 <h5 className="font-bold text-green-600">{category.name}</h5>
               </div>
             </div>
+          </Link>
           </div>
         );
       })}

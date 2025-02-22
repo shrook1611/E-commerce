@@ -34,13 +34,21 @@ export default function Products() {
     dispatch(getProducts());
   }, []);
 
-  return (
+  return (<>
+
+
+    <div className="flex justify-center items-center p-5">
+
+    <h2 className=" text-green-600 font-extrabold text-2xl">All Products</h2>
+  </div>
     <div className=" row">
+     
       {products.map((product) => {
         return (
           <div
+
             key={product.id}
-            className="p-5  sm:w-full md:w-1/2 lg:w-1/5 product "
+            className="p-5  sm:w-full md:w-1/2 lg:w-1/4 xl:w-1/5 product "
           >
             <Link to={`/productdetails/${product.id}`}>
               <div className="inner ">
@@ -63,5 +71,6 @@ export default function Products() {
         );
       })}
     </div>
+    </>
   );
 }

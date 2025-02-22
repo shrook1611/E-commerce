@@ -1,9 +1,15 @@
 import React from 'react';
 import styles from './ProductItem.module.css';
-import { FaCartShopping, FaStar } from 'react-icons/fa6';
+import { FaCartShopping, FaHeart, FaRegHeart, FaStar } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
 import { MdFavoriteBorder } from "react-icons/md";
-export default function ProductItem({product ,addProduct,addWish}) {
+export default function ProductItem({product ,addProduct,addWish,toggleHeart,isActive}) {
+
+  function addToggle(){
+    addWish(product.id)
+    toggleHeart(product.id)
+  }
+
   return (
     <div>
 
@@ -17,7 +23,7 @@ export default function ProductItem({product ,addProduct,addWish}) {
 
 <Link to={`/productdetails/${product.id}`}>
 
-{console.log(product)}
+{/* {console.log(product)} */}
 <div className="inner">
 
 <img src={product.imageCover} alt={product.tittle} className="w-full h-[300px]" />
@@ -35,8 +41,15 @@ export default function ProductItem({product ,addProduct,addWish}) {
 </Link>
 <button onClick={()=>{addProduct(product.id)}} className='btn w-full flex justify-between items-center font-semibold ' >Add to cart <FaCartShopping /> </button>
 
-<button   onClick={()=>{addWish(product.id)}}     className={'text-2xl absolute top-0 right-0 font-semibold cursor-pointer'}><MdFavoriteBorder /></button>
+{/* <button   onClick={()=>{addWish(product.id)}}     className={'text-2xl absolute top-0 right-0 font-semibold cursor-pointer'}><MdFavoriteBorder /></button> */}
 
+
+
+<button className={`wishlist-toggle ${isActive ? 'active' : ''}`} onClick={addToggle}>
+  {console.log(isActive)}
+      {/* Show filled heart if active, else show outline */}
+      {isActive ? <FaHeart className="heart-icon active-heart" /> : <FaRegHeart className="heart-icon" />}
+    </button>
 </div>
 
 

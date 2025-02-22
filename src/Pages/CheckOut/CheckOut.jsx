@@ -6,15 +6,21 @@ import { useFormik } from "formik";
 import axios from "axios";
 import { tokenContext } from "../../Components/TokenContext/TokenContext";
 import { CartContext } from "../../Components/Context/CartContext";
+import Cart from "../Cart/Cart";
 
 export default function CheckOut() {
   const [error, setError] = useState(null);
 
-
- const{state}= useLocation()
+  const { state } = useLocation();
   const [isLoading, setIsLoading] = useState(false);
-  const { cashOnDilvery, setNOfCartItems, setCartId, onlinPayment } =
-    useContext(CartContext);
+  const {
+    cashOnDilvery,
+    setNOfCartItems,
+    setCartId,
+    onlinPayment,
+    userId,
+    cartId,
+  } = useContext(CartContext);
   const { setToken } = useContext(tokenContext);
   const navigate = useNavigate();
   const initialValues = {
@@ -29,9 +35,8 @@ export default function CheckOut() {
 
       if (res.status) {
         setNOfCartItems(0);
-        navigate("/Userorder");
-        setCartId(null);
-       
+        navigate(`/Userorder/${userId}`);
+        setCartId(cartId);
       }
     } else {
       let response = await onlinPayment({ shippingAddress: data });

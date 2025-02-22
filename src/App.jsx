@@ -32,6 +32,8 @@ import ForgetPassword from "./Pages/ForgetPassword/ForgetPassword";
 import RestPassword from "./Pages/RestPassword/RestPassword";
 import NewPassword from "./Pages/NewPassword/NewPassword";
 import UserOrder from "./Pages/UserOrder/UserOrder";
+import ViewCart from "./Pages/ViewCart/ViewCart";
+import CategoryProducts from "./Pages/CategoryProducts/CategoryProducts";
 
 export default function App() {
   const routes = createBrowserRouter([
@@ -161,7 +163,7 @@ export default function App() {
 
 
         {
-          path: "userorder",
+          path: "userorder/:userId",
           element: (
             <ProtctedRoutes>
               <UserOrder />
@@ -182,6 +184,35 @@ export default function App() {
             </ProtctedRoutes>
           ),
         },
+
+
+        {
+
+          
+          path: "categoryProducts/:categoryId",
+          element: (
+            <ProtctedRoutes>
+              <CategoryProducts />
+            </ProtctedRoutes>
+          ),
+        },
+
+
+
+
+        {
+
+          
+          path: "/ViewCart/:cartId",
+          element: (
+            <ProtctedRoutes>
+              <ViewCart />
+            </ProtctedRoutes>
+          ),
+        },
+
+
+
         { path: "*", element: <NotFound /> },
       ],
     },

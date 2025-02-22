@@ -21,16 +21,16 @@ export default function ProductDetails() {
   const { productId } = useParams();
   const [productDetail, setProductDetail] = useState([]);
 
-  const { addTocart,setNOfCartItems, setCartId} = useContext(CartContext);
+  const { addTocart, setNOfCartItems, setCartId } = useContext(CartContext);
 
   async function addProduct(id) {
     const res = await addTocart(id);
     if (res.status == "success") {
       setNOfCartItems(res.numOfCartItems);
-      setCartId(res.cartId)
-      toast.success(res.message, { style: { fontWeight: "bold" ,
-        color:"green"
-      } });
+      setCartId(res.cartId);
+      toast.success(res.message, {
+        style: { fontWeight: "bold", color: "green" },
+      });
     } else {
       toast.error("somthing went wrong");
     }
@@ -54,18 +54,18 @@ export default function ProductDetails() {
 
   return (
     <div className="row justify-center items-center">
-      <div className="w-1/4 mb-10">
+      <div className="md:w-1/4 sm:w-full mb-10">
         <Slider {...settings}>
           {productDetail.images?.map((img, index) => {
             return (
-              <div className="">
-                <img src={img} alt="" key={index} />
+              <div className="" key={index}>
+                <img src={img} alt={productDetail.title} key={index} />
               </div>
             );
           })}
         </Slider>
       </div>
-      <div className="w-3/4 p-4">
+      <div className="md:w-3/4  sm:w-full p-4">
         <div className="inner">
           <h2 className="text-green-600 font-semibold">
             {productDetail.title}

@@ -9,8 +9,8 @@ import { toast } from "react-hot-toast";
 import { VscClearAll } from "react-icons/vsc";
 export default function Cart() {
   const [cartData, setCartData] = useState([]);
- const navigate= useNavigate()
-const [paymentMethod, setPaymentMethod] = useState('cash')
+  const navigate = useNavigate();
+  const [paymentMethod, setPaymentMethod] = useState("cash");
   const {
     getLoggedcartItems,
     removeCartItem,
@@ -22,8 +22,6 @@ const [paymentMethod, setPaymentMethod] = useState('cash')
   async function getData() {
     const data = await getLoggedcartItems();
     setCartData(data.data);
-
-    console.log(data.data);
   }
   async function deleteItem(id) {
     const response = await removeCartItem(id);
@@ -35,7 +33,6 @@ const [paymentMethod, setPaymentMethod] = useState('cash')
   async function updateProduct(id, count) {
     let response = await updateCartProducts(id, count);
     setCartData(response.data);
-   
   }
 
   async function clearCart() {
@@ -70,23 +67,18 @@ const [paymentMethod, setPaymentMethod] = useState('cash')
                   EGP
                 </span>
               </h4>
-              
             )}
 
-
-<div className="text-center my-5 font-xxl">
-        <button
-          onClick={() => {
-            clearCart();
-          }}
-          
-        >
-        <VscClearAll className=" text-white bg-red-600 font-xxl  font-bold" />
-        </button>
-      </div>
-
+            <div className="text-center my-5 font-xxl">
+              <button
+                onClick={() => {
+                  clearCart();
+                }}
+              >
+                <VscClearAll className=" text-white bg-red-600 font-xxl  font-bold" />
+              </button>
+            </div>
           </div>
-{console.log(cartData._id)}
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -112,7 +104,6 @@ const [paymentMethod, setPaymentMethod] = useState('cash')
                 {cartData.products && cartData.products?.length > 0 ? (
                   cartData.products.map((product) => {
                     {
-                      console.log(product);
                     }
                     return (
                       <tr
@@ -120,11 +111,13 @@ const [paymentMethod, setPaymentMethod] = useState('cash')
                         className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
                       >
                         <td className="p-4">
-                          <img
-                            src={product.product?.imageCover}
-                            className="w-16 md:w-32 max-w-full max-h-full"
-                            alt="Apple Watch"
-                          />
+                          <Link to={`/productdetails/${product.product?.id}`}>
+                            <img
+                              src={product.product?.imageCover}
+                              className="w-16 md:w-32 max-w-full max-h-full"
+                              alt="Apple Watch"
+                            />
+                          </Link>
                         </td>
                         <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
                           {product.product?.title}
@@ -212,20 +205,20 @@ const [paymentMethod, setPaymentMethod] = useState('cash')
                     );
                   })
                 ) : (
-                  <tr className="text-center w-full flex justify-between items-center">
-                    <td>
-                      <p className="font-semibold text-xl">
+                  <div className="text-center w-full flex justify-center   flex-col  gap-4 items-center m-20 p-20">
+                    <div>
+                      <p className="font-bold text-xl capitalize text-green-700">
                         no items found in your Cart
                       </p>
-                    </td>
-                    <td>
+                    </div>
+                    <div>
                       <Link to={"/"}>
                         <button className="btn text-center">
                           continue shopping
                         </button>
                       </Link>
-                    </td>
-                  </tr>
+                    </div>
+                  </div>
                 )}
               </tbody>
             </table>
@@ -234,42 +227,43 @@ const [paymentMethod, setPaymentMethod] = useState('cash')
       ) : (
         <Loader />
       )}
-     
-   {cartData?<>
-   
-    <label htmlFor="paymentMethod" className=" text-green-600 font-bold "> choose your Payment Method :</label>
-      <select name="paymentMethod" id="paymentMethod" onChange={(e)=>{
-        setPaymentMethod(e.target.value)
 
-      }} className=" block m-4 w-1/2 border-2 rounded-2xl hover:border-green-500  " >
-<option value="cash">cash</option>
+      {cartData.products && cartData.products?.length > 0 ? (
+        <>
+          <label htmlFor="paymentMethod" className=" text-green-600 font-bold ">
+            {" "}
+            choose your Payment Method :
+          </label>
+          <select
+            name="paymentMethod"
+            id="paymentMethod"
+            onChange={(e) => {
+              setPaymentMethod(e.target.value);
+            }}
+            className=" block m-4 w-1/2 border-2 rounded-2xl hover:border-green-500  "
+          >
+            <option value="cash">cash</option>
 
-<option value="online">online</option>
-
+            <option value="online">online</option>
           </select>
-   
-   </>:<div className="hidden">
-   
-   <label htmlFor="paymentMethod" className=" text-green-600 font-bold "> choose your Payment Method :</label>
-     <select name="paymentMethod" id="paymentMethod" onChange={''} className=" block m-4 w-1/2 border-2 rounded-2xl hover:border-green-500  " >
-<option value="cash">cash</option>
+        </>
+      ) : (
+        ""
+      )}
 
-<option value="online">online</option>
-
-         </select>
-  
-  </div>}
-
-
-
-
-        <button type="submit" className="btn w-full"
-       onClick={()=>{
-        navigate('/checkout',{state:paymentMethod})
-       }} >
+      {cartData.products && cartData.products?.length > 0 ? (
+        <button
+          type="submit"
+          className="btn w-full"
+          onClick={() => {
+            navigate("/checkout", { state: paymentMethod });
+          }}
+        >
           CheckOut
         </button>
-     
+      ) : (
+        ""
+      )}
     </div>
   );
 }

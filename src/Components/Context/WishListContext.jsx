@@ -7,6 +7,32 @@ const headers = { token: localStorage.getItem("token") };
 
 export default function WishListContextProvider({ children }) {
   const [nOfWishItems, setNOfWishItems] = useState(0);
+  const [isActive, setIsActive] = useState(false)
+
+
+
+ 
+  function toggleHeart() {
+
+
+    setIsActive(!isActive);
+   
+    const newState = !isActive;
+    setIsActive(newState);
+    localStorage.setItem('wishlist-heart', JSON.stringify(newState));
+   
+  }
+ 
+  useEffect(() => {
+    const savedState = localStorage.getItem('wishlist-heart');
+    if (savedState !== null) {
+      setIsActive(JSON.parse(savedState));
+    }
+  }, []);
+  
+
+
+
 
   function addToWishList(id) {
     return axios
@@ -18,8 +44,8 @@ export default function WishListContextProvider({ children }) {
         { headers }
       )
       .then((res) => {
-       console.log(res.data);
-       return res.data
+        console.log(res.data);
+        return res.data;
       })
       .catch((err) => err);
   }
@@ -28,39 +54,22 @@ export default function WishListContextProvider({ children }) {
     return axios
       .get("https://ecommerce.routemisr.com/api/v1/wishlist", { headers })
       .then((res) => {
-        console.log(res.data)
-     
-        return res.data
+        // console.log(res.data);
+
+        return res.data;
       })
       .catch((err) => err);
-
-
-
-
   }
-
-
 
   async function getWishItem() {
     let response = await getLoggedWishItems();
-    console.log(response)
-     setNOfWishItems(response.count);
-   
+    // console.log(response);
+    setNOfWishItems(response.count);
   }
 
   useEffect(() => {
     getWishItem();
   }, []);
-
-
-
-
-
-
-
-
-
-
 
 
   function removeWishItem(productId) {
@@ -72,17 +81,18 @@ export default function WishListContextProvider({ children }) {
       .catch((err) => err);
   }
 
-
   return (
     <WishContext.Provider
       value={{
         addToWishList,
         getLoggedWishItems,
-
+        toggleHeart,
         removeWishItem,
         getWishItem,
         nOfWishItems,
         setNOfWishItems,
+        isActive,
+        setIsActive,
       }}
     >
       {children}

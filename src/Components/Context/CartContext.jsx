@@ -1,4 +1,5 @@
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 import { createContext, useEffect, useState } from "react";
 
 export const CartContext = createContext();
@@ -6,6 +7,12 @@ export default function CartContextProvider({ children }) {
   const headers = { token: localStorage.getItem("token") };
   const [nOfCartItems, setNOfCartItems] = useState(0);
   const [cartId, setCartId] = useState(null);
+
+  const token = localStorage.getItem("token");
+
+  const decoded = jwtDecode(token);
+
+  const userId = decoded.id;
 
   function addTocart(id) {
     return axios
@@ -105,6 +112,9 @@ export default function CartContextProvider({ children }) {
         setCartId,
         setNOfCartItems,
         cashOnDilvery,
+        userId,
+        cartId
+
       }}
     >
       {children}

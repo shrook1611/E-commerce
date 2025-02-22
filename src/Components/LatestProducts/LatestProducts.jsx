@@ -12,8 +12,14 @@ import { WishContext } from "../Context/WishListContext";
 
 export default function LatestProducts() {
   const { addTocart, setNOfCartItems, setCartId } = useContext(CartContext);
-  const { addToWishList, nOfWishItems, setNOfWishItems,getLoggedWishItems,getWishItem } =
-    useContext(WishContext);
+  const {
+    addToWishList,
+    getLoggedWishItems,
+    getWishItem,
+    toggleHeart,
+    setIsActive,
+    isActive,
+  } = useContext(WishContext);
   const [products, setProducts] = useState([]);
   async function getProduct() {
     await axios
@@ -30,7 +36,14 @@ export default function LatestProducts() {
     getProduct();
   }, []);
 
-  async function addProduct(id) {
+  useEffect(() => {
+    const savedState = localStorage.getItem("wishlist-heart");
+    if (savedState !== null) {
+      setIsActive(JSON.parse(savedState));
+    }
+  }, []);
+
+   async function addProduct(id) {
     const res = await addTocart(id);
 
     if (res.status == "success") {
@@ -46,24 +59,25 @@ export default function LatestProducts() {
   }
 
   async function addWish(id) {
-     const res = await addToWishList(id);
-     getLoggedWishItems()
-     getWishItem()
-    console.log(res)
+    const res = await addToWishList(id);
+
+    //
+    console.log(res);
 
     if (res.status == "success") {
-     
+      getLoggedWishItems();
+      getWishItem();
+      setIsActive(!isActive);
       toast.success(res.message, {
         style: { fontWeight: "bold", color: "green" },
       });
     } else {
       toast.error("somthing went wrong");
     }
-   
   }
 
   return (
-    <div className="row ">
+    <div className="row justify-center items-center ">
       {products.length > 0 ? (
         products.map((product) => {
           return (
@@ -75,6 +89,8 @@ export default function LatestProducts() {
                 product={product}
                 addProduct={addProduct}
                 addWish={addWish}
+                toggleHeart={toggleHeart}
+                isActive={isActive}
               />
             </div>
           );

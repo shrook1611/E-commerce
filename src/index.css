@@ -7,6 +7,7 @@
 .active {
   color: green;
   border-bottom: 3px solid green;
+  font-weight: 700;
 }
 @layer components {
   :root {
@@ -109,3 +110,21 @@
     height: 5em;
   }
 }
+
+
+.wishlist-toggle .heart-icon {
+  font-size: 30px;
+  color: gray; /* Default color for inactive heart */
+  transition: color 0.3s ease;
+}
+
+/* Active (filled) heart style */
+.wishlist-toggle.active .heart-icon {
+  color: red; 
+  
+}
+
+/* 
+.wishlist-toggle:hover .heart-icon {
+  color: #ff4d4d; 
+} */

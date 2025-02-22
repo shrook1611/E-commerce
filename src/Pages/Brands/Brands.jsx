@@ -18,7 +18,7 @@ export default function Brands() {
 
   const brands = data?.data?.data;
 
-  console.log(brands);
+  // console.log(brands);
 
   return (
     <div className="container mx-auto">
@@ -26,7 +26,7 @@ export default function Brands() {
         {brands?.map((brand) => {
           return (
             <Link  key={brand._id}
-              className="w-1/3 text-center flex items-center"
+              className="text-center flex items-center sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/4 "
               to={`/brandsDetalis/${brand._id}`}
             >
               <div className="outter p-3  ">
@@ -34,7 +34,7 @@ export default function Brands() {
                   <img
                     src={brand.image}
                     alt={brand.name}
-                    className=" rounded-full w-[200px] h-[200px] hover:shadwo-xl hover:scale-[1.1]  transition-all duration-500"
+                    className=" w-[200px] h-[200px] hover:shadwo-xl hover:scale-[1.1]  transition-all duration-500"
                   />
                   <h5 className="font-bold text-green-600 text-2xl m-1">
                     {brand.name}
