@@ -27,14 +27,14 @@ export default function CategoryProducts() {
 
   let allProductCategory = data?.data?.data;
 
-//   console.log(allProductCategory);
+  
 
   const filterdProducts = allProductCategory.filter((product) => {
     return product.category._id === categoryId;
   });
 
   console.log(filterdProducts);
-
+ 
 //   console.log("Category ID: ", categoryId);
 //   console.log("All Products: ", allProductCategory);
 
@@ -54,7 +54,12 @@ export default function CategoryProducts() {
 
   return (
      <>
+   
+     
           <div className="row">
+
+            
+          
             {filterdProducts ? (
               filterdProducts.map((product) => {
                 return (

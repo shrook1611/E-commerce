@@ -9,18 +9,24 @@ import Loader from "../Loader/Loader";
 import toast from "react-hot-toast";
 import { CartContext } from "../Context/CartContext";
 import { WishContext } from "../Context/WishListContext";
+import { Link } from "react-router-dom";
+import { FaHeart } from "react-icons/fa6";
 
 export default function LatestProducts() {
   const { addTocart, setNOfCartItems, setCartId } = useContext(CartContext);
-  const {
-    addToWishList,
-    getLoggedWishItems,
-    getWishItem,
-    toggleHeart,
-    setIsActive,
-    isActive,
-  } = useContext(WishContext);
+  const { addToWishList, getLoggedWishItems, getWishItem, removeWishItem } =
+    useContext(WishContext);
   const [products, setProducts] = useState([]);
+
+  const [wishListClicked, setWishListClicked] = useState([]);
+  const [searchLetter, setSearchLetter] = useState([])
+
+
+
+
+
+
+  
   async function getProduct() {
     await axios
       .get("https://ecommerce.routemisr.com/api/v1/products")
@@ -32,18 +38,25 @@ export default function LatestProducts() {
       });
   }
 
+
+
+
+  async function getWishListProduct() {
+    const data = await getLoggedWishItems();
+
+    console.log(data, "shrook");
+
+    const wishProducts = data.data.map((product) => product._id);
+    console.log(wishProducts);
+    setWishListClicked(wishProducts);
+  }
+
   useEffect(() => {
     getProduct();
+    getWishListProduct();
   }, []);
 
-  useEffect(() => {
-    const savedState = localStorage.getItem("wishlist-heart");
-    if (savedState !== null) {
-      setIsActive(JSON.parse(savedState));
-    }
-  }, []);
-
-   async function addProduct(id) {
+  async function addProduct(id) {
     const res = await addTocart(id);
 
     if (res.status == "success") {
@@ -55,7 +68,7 @@ export default function LatestProducts() {
     } else {
       toast.error("somthing went wrong");
     }
-    console.log(res);
+    // console.log(res);
   }
 
   async function addWish(id) {
@@ -67,7 +80,7 @@ export default function LatestProducts() {
     if (res.status == "success") {
       getLoggedWishItems();
       getWishItem();
-      setIsActive(!isActive);
+
       toast.success(res.message, {
         style: { fontWeight: "bold", color: "green" },
       });
@@ -75,29 +88,79 @@ export default function LatestProducts() {
       toast.error("somthing went wrong");
     }
   }
+  const selectedProducts = products.slice(0, 10);
+
+  async function toggleWishList(id) {
+    if (wishListClicked.includes(id)) {
+      let data = await removeWishItem(id);
+      console.log(data.data);
+      setWishListClicked(data.data)
+    } else {
+      let data = await addToWishList(id);
+      console.log(data);
+      setWishListClicked(data.data)
+    }
+  }
 
   return (
-    <div className="row justify-center items-center ">
-      {products.length > 0 ? (
-        products.map((product) => {
-          return (
-            <div
-              className=" gap-2 w-full sm:w-1/2 md:w-1/3 lg:w-1/6 xl:w-1/6"
-              key={product.id}
-            >
-              <ProductItem
-                product={product}
-                addProduct={addProduct}
-                addWish={addWish}
-                toggleHeart={toggleHeart}
-                isActive={isActive}
-              />
-            </div>
-          );
-        })
-      ) : (
-        <Loader />
-      )}
+    <div className="relative">
+      <div>
+        <h2 className="text-green-700 font-bold text-4xl  my-10 capitalize ">
+          <span className="text-sm">
+            <FaHeart className="text-red-700 inline" />
+          </span>{" "}
+          <span className="text-sm">
+            <FaHeart className="text-red-700 inline" />
+          </span>{" "}
+          new arrival{" "}
+          <span className="text-sm">
+            <FaHeart className="text-red-700 inline" />{" "}
+          </span>{" "}
+          <span className="text-sm">
+            <FaHeart className="text-red-700 inline" />
+          </span>{" "}
+        </h2>
+      </div>
+
+      <input
+              type="text"
+              id="search"
+              name="name"
+              className="bg-gray-50 w-[70%]  mx-auto  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block my-5  p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="search"
+             onClick={(e)=>{setSearchLetter(e.target.value)}}
+            />
+
+
+      <div className="row justify-center items-center ">
+        {products.length > 0 ? (
+          selectedProducts.map((product, index) => {
+            return (
+              <div
+                className=" gap-2 w-full sm:w-full md:w-1/2 lg:w-1/4 xl:w-1/6"
+                key={product.id}
+              >
+                <ProductItem
+                  product={product}
+                  addProduct={addProduct}
+                  addWish={addWish}
+                  wishListClicked={wishListClicked}
+                  toggleWishList={toggleWishList}
+                />
+              </div>
+            );
+          })
+        ) : (
+          <Loader />
+        )}
+      </div>
+      <Link
+        to={"/products"}
+        className="bg-gray-200 absolute bottom-20 right-20 capitalize rounded-2xl p-2"
+      >
+        {" "}
+        see more...
+      </Link>
     </div>
   );
 }

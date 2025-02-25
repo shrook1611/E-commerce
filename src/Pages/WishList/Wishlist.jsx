@@ -24,7 +24,7 @@ export default function Wishlist() {
     if (res.status == "success") {
  
         toast.success(res.message, { style: { fontWeight: "bold" ,
-          color:"green"
+          color:"red"
         } });
       } else {
         toast.error("somthing went wrong");

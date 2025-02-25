@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react";
 import Slider from "react-slick";
+import { Link } from "react-router-dom";
 
 const settings = {
   dots: true,
@@ -11,6 +12,8 @@ const settings = {
   speed: 500,
   slidesToShow: 6,
   slidesToScroll: 2,
+  autoplay: true,
+  autoplayspeed: 100,
   responsive: [
     {
       breakpoint: 1024,
@@ -64,13 +67,14 @@ export default function CategorySlider() {
   }, []);
 
   return (
-    <div className="m-10 ">
+    <div className="m-20 ">
+      <h2 className='text-green-700 font-extrabold text-2xl my-10'>Shop Popular Categories</h2>
       <Slider {...settings}>
         {category.length > 0 &&
           category.map((category) => {
             return (
               <div key={category._id} className="cursor-pointer p-3 ">
-                <div>
+              <Link to={`/categoryProducts/${category._id}`}>  <div>
                   <img
                     src={category.image}
                     alt={category.name}
@@ -79,7 +83,7 @@ export default function CategorySlider() {
                   <h4 className="font-semibold text-green-400">
                     {category.name}
                   </h4>
-                </div>
+                </div></Link>
               </div>
             );
           })}

@@ -18,15 +18,16 @@ export default function Brands() {
 
   const brands = data?.data?.data;
 
-  // console.log(brands);
+  
 
   return (
-    <div className="container mx-auto">
+    <div >
+      <h2 className="text-green-600 font-extrabold mt-5 text-2xl text-center p-10">All Brands</h2>
       <div className="row  ">
         {brands?.map((brand) => {
           return (
             <Link  key={brand._id}
-              className="text-center flex items-center sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/4 "
+              className="text-center flex items-center justify-center sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/4 "
               to={`/brandsDetalis/${brand._id}`}
             >
               <div className="outter p-3  ">
