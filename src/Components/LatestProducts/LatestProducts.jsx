@@ -93,10 +93,16 @@ export default function LatestProducts() {
   async function toggleWishList(id) {
     if (wishListClicked.includes(id)) {
       let data = await removeWishItem(id);
+      toast.success(data.message, {
+        style: { fontWeight: "bold", color: "red" },
+      });
       console.log(data.data);
       setWishListClicked(data.data)
     } else {
       let data = await addToWishList(id);
+      toast.success(data.message, {
+        style: { fontWeight: "bold", color: "green" },
+      });
       console.log(data);
       setWishListClicked(data.data)
     }

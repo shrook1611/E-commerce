@@ -8,14 +8,13 @@ import GetDisscount from "../../Components/GetDisscount/GetDisscount";
 import GetDeals from "../../Components/GetDeals/GetDeals";
 import Search from "../../Components/Search/Search";
 import LandingSlider from "../../Components/LandingSlider/LandingSlider";
-import LandingPage from "../../Components/LandingPage/LandingPage";
 export default function Home() {
   let { counter } = useContext(CounterContext);
 
   return (
     <div>
 
-      {/* <LandingPage/> */}
+      
       <MainSlider></MainSlider>
 
       <CategorySlider></CategorySlider>

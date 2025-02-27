@@ -1,19 +1,64 @@
-import React, { useContext, useEffect } from "react";
-import styles from "./Products.module.css";
-import { useDispatch, useSelector } from "react-redux";
-import { store } from "./../../redux/store";
+import React, { useContext } from "react";
 
-import { getProducts } from "./../../redux/productSlice";
-import { Link } from "react-router-dom";
-import { FaCartShopping } from "react-icons/fa6";
-import { CartContext } from "../../Components/Context/CartContext";
+import axios from "axios";
+import { useState } from "react";
+import { useEffect } from "react";
+import { FaStar } from "react-icons/fa6";
+
+
 import toast from "react-hot-toast";
-export default function Products() {
- let { products } = useSelector((state) => state.productRd);
-  const dispatch = useDispatch();
-  const { addTocart, setNOfCartItems, setCartId } = useContext(CartContext);
 
-  console.log(products);
+
+import { Link } from "react-router-dom";
+import { FaHeart } from "react-icons/fa6";
+import ProductItem from './../../Components/ProductItem/ProductItem';
+import Loader from "../../Components/Loader/Loader";
+import { CartContext } from './../../Components/Context/CartContext';
+import { WishContext } from './../../Components/Context/WishListContext';
+
+export default function Products() {
+  const { addTocart, setNOfCartItems, setCartId } = useContext(CartContext);
+  const { addToWishList, getLoggedWishItems, getWishItem, removeWishItem } =
+    useContext(WishContext);
+  const [products, setProducts] = useState([]);
+
+  const [wishListClicked, setWishListClicked] = useState([]);
+  const [searchLetter, setSearchLetter] = useState([])
+
+
+
+
+
+
+  
+  async function getProduct() {
+    await axios
+      .get("https://ecommerce.routemisr.com/api/v1/products")
+      .then((res) => {
+        setProducts(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+
+
+
+  async function getWishListProduct() {
+    const data = await getLoggedWishItems();
+
+    console.log(data, "shrook");
+
+    const wishProducts = data.data.map((product) => product._id);
+    console.log(wishProducts);
+    setWishListClicked(wishProducts);
+  }
+
+  useEffect(() => {
+    getProduct();
+    getWishListProduct();
+  }, []);
 
   async function addProduct(id) {
     const res = await addTocart(id);
@@ -27,160 +72,104 @@ export default function Products() {
     } else {
       toast.error("somthing went wrong");
     }
-    console.log(res);
+    // console.log(res);
   }
 
-  useEffect(() => {
-    dispatch(getProducts());
-    
-  }, []);
+  async function addWish(id) {
+    const res = await addToWishList(id);
+
+    //
+    console.log(res);
+
+    if (res.status == "success") {
+      getLoggedWishItems();
+      getWishItem();
+
+      toast.success(res.message, {
+        style: { fontWeight: "bold", color: "green" },
+      });
+    } else {
+      toast.error("somthing went wrong");
+    }
+  }
+ 
+  async function toggleWishList(id) {
+    if (wishListClicked.includes(id)) {
+      let data = await removeWishItem(id);
+      toast.success(data.message, {
+        style: { fontWeight: "bold", color: "red" },
+      });
+      console.log(data.data);
+      setWishListClicked(data.data)
+    } else {
+      let data = await addToWishList(id);
+      toast.success(data.message, {
+        style: { fontWeight: "bold", color: "green" },
+      });
+      console.log(data);
+      setWishListClicked(data.data)
+    }
+  }
+
+  return (
+    <div className="relative">
+      <div>
+        <h2 className="text-green-700 font-bold text-4xl  my-10 capitalize  text-center">
+          <span className="text-sm">
+            <FaHeart className="text-red-700 inline" />
+          </span>{" "}
+          <span className="text-sm">
+            <FaHeart className="text-red-700 inline" />
+          </span>{" "}
+         All Products{" "}
+          <span className="text-sm">
+            <FaHeart className="text-red-700 inline" />{" "}
+          </span>{" "}
+          <span className="text-sm">
+            <FaHeart className="text-red-700 inline" />
+          </span>{" "}
+        </h2>
+      </div>
+
+      <input
+              type="text"
+              id="search"
+              name="name"
+              className="bg-gray-50 w-[70%]  mx-auto  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block my-5  p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="search"
+             onClick={(e)=>{setSearchLetter(e.target.value)}}
+            />
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- function PaginationExample  ({ products, productsPerPage }) {
-    const [currentPage, setCurrentPage] = useState(1);
-  
-    // Calculate the total number of pages
-    const totalPages = Math.ceil(products.length / productsPerPage);
-  
-    // Function to handle page change
-    const handlePageChange = (page) => {
-      if (page >= 1 && page <= totalPages) {
-        setCurrentPage(page);
-      }
-    };
-  
-    // Get the current products to display based on the current page
-    const indexOfLastItem = currentPage * productsPerPage;
-    const indexOfFirstItem = indexOfLastItem - productsPerPage;
-     products = products.slice(indexOfFirstItem, indexOfLastItem);}
-  console.log(products )
-
-  return (<>
-
-
-    <div className="flex justify-center items-center p-5">
-
-    <h2 className=" text-green-600 font-extrabold text-2xl">All Products</h2>
-  </div>
-    <div className=" row">
-     
-      {products.map((product) => {
-        return (
-          <div
-
-            key={product.id}
-            className="p-5  sm:w-full md:w-1/2 lg:w-1/5 xl:w-1/6 product "
-          >
-            <Link to={`/productdetails/${product.id}`}>
-              <div className="inner ">
-                <img src={product.imageCover} alt={product.title} />
-                <h4 className=" font-bold font-2xl text-green-700 text-center">
-                  {product.title.split(" ").slice(0, 3).join(" ")}
-                </h4>
+      <div className="row justify-center items-center ">
+        {products.length > 0 ? (
+          products.map((product, index) => {
+            return (
+              <div
+                className=" gap-2 w-full sm:w-full md:w-1/2 lg:w-1/4 xl:w-1/6"
+                key={product.id}
+              >
+                <ProductItem
+                  product={product}
+                  addProduct={addProduct}
+                  addWish={addWish}
+                  wishListClicked={wishListClicked}
+                  toggleWishList={toggleWishList}
+                />
               </div>
-            </Link>
-
-            <button
-              onClick={() => {
-                addProduct(product.id);
-              }}
-              className="btn w-full flex justify-between items-center font-semibold "
-            >
-              Add to cart <FaCartShopping />{" "}
-            </button>
-          </div>
-        );
-      })}
+            );
+          })
+        ) : (
+          <Loader />
+        )}
+      </div>
+      <Link
+        to={"/products"}
+        className="bg-gray-200 absolute bottom-20 right-20 capitalize rounded-2xl p-2"
+      >
+        {" "}
+        see more...
+      </Link>
     </div>
-
-
-
-
-
-
-
-
-
-
-    {/* pagenation */}
-
-
-
-
-
-
-{/* <div className="flex justify-center items-center my-5">
-<nav aria-label="Page navigation example">
-  <ul className="flex items-center -space-x-px h-8 text-sm">
-    <li>
-      <button  onClick={()=>{handlePageChange(currentPage - 1)}} disabled={currentPage === 1 } className="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-        <span className="sr-only">Previous</span>
-        <svg className="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-          <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 1 1 5l4 4" />
-        </svg>
-      </button>
-    </li>
-    <li>
-      <a href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-    </li>
-    <li>
-      <a href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-    </li>
-    <li>
-      <a href="#" aria-current="page" className="z-10 flex items-center justify-center px-3 h-8 leading-tight text-blue-600 border border-blue-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-    </li>
-    <li>
-      <a href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
-    </li>
-  
-    <li>
-      <button    onClick={()=>{handlePageChange(currentPage + 1)}} disabled={currentPage === totalPages }              className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-        <span className="sr-only">Next</span>
-        <svg className="w-2.5 h-2.5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-          <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="m1 9 4-4-4-4" />
-        </svg>
-      </button>
-    </li>
-  </ul>
-</nav>
-
-</div> */}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    </>
   );
 }
