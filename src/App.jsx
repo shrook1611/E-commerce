@@ -25,7 +25,7 @@ import { Provider } from "react-redux";
 
 import AllOrders from "./Pages/AllOrders/AllOrders";
 import Brands from "./Pages/Brands/Brands";
-import BrandsDetalis from "./Pages/BrandsDetails/brandsDetalis";
+
 import Wishlist from "./Pages/WishList/Wishlist";
 import WishListContextProvider from "./Components/Context/WishListContext";
 import ForgetPassword from "./Pages/ForgetPassword/ForgetPassword";
@@ -35,6 +35,7 @@ import UserOrder from "./Pages/UserOrder/UserOrder";
 import ViewCart from "./Pages/ViewCart/ViewCart";
 import CategoryProducts from "./Pages/CategoryProducts/CategoryProducts";
 import CheckOut from "./Pages/CheckOut/CheckOut";
+import BrandsDetalis from './Pages/BrandsDetails/BrandsDetalis';
 
 export default function App() {
   const routes = createBrowserRouter([
